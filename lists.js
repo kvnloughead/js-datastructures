@@ -111,6 +111,18 @@ class List {
     }
 }
 
+function filterForAttribute(list, property, x){
+    // filters list, displaying only those elements such that element[property] === x
+    var newList = new List();
+    for (list.front(); list.hasNext();){
+        elem = list.next()
+        if (elem[property] === x){
+            newList.append(elem);
+        }
+    }
+    return newList;
+}
+
 function test(){
     // Testing functions
     // Not very robust or complete
