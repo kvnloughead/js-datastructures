@@ -1,9 +1,3 @@
-// Implementation of List data structure, a la Michael McMillian
-
-// Desireable improvements:
-    // make insert method allow insertion of multiple elements
-    //                and allow locating insertion by index
-
 function List(){
     this.dataStore = [];
     this.listSize = 0;
@@ -25,6 +19,8 @@ function List(){
     this.next = next;
     this.hasPrevious = hasPrevious;
     this.hasNext = hasNext;
+    // Exercises
+    this.insertIfBiggest = insertIfBiggest;
               
 }
 
@@ -52,10 +48,19 @@ function remove(element){
     return false;
 }
 
-function insert(newElement, afterThisElement){
-    // inserts newElement afterThisElement (if possible)
-
-    var insertPos = this.find(afterThisElement);
+function insert(newElement, afterThis=undefined, byIndex=false){
+    // inserts newElement after first instance of afterThis (if possible)
+    // leaving afterThis=undefined inserts at front of list.
+    // byIndex=true makes afterThis an index.
+    if (afterThis === undefined){
+        this.dataStore.splice(0, 0, newElement)
+        return true;
+    }
+    if (byIndex){
+        var insertPos = afterThis;
+    } else {
+        var insertPos = this.find(afterThis);
+    }
     if (insertPos != -1){
         this.dataStore.splice(insertPos+1, 0, newElement);
         ++this.listSize;
@@ -133,33 +138,24 @@ function end(){
     this.pos = this.listSize - 1;
 }
 
-function test(){
-    var numbers = new List()
-    numbers.append(1)
-    numbers.append(2)
-    numbers.append(3)
-    console.log('[1, 2, 3] == ', numbers.dataStore)
 
-    console.log('Testing position getters and setters')
-    console.log('====================================')
-    console.log('0 ==', numbers.pos)
-    console.log('0 ==', numbers.getPos())
-    numbers.setPos(1)
-    console.log('1 ==', numbers.getPos())
-    numbers.front()
-    console.log('0 ==', numbers.getPos())
-    numbers.end()
-    console.log('2 ==', numbers.getPos())
-    console.log(numbers.find(2))
-    console.log(numbers.find(4))
+//Exercises
+//1
 
-    console.log('Testing find and remove')
-    console.log('=======================')
-    console.log('-1 ==', numbers.find(0))
-    console.log('0 ==', numbers.find(1))
-    
-    
+function insertIfBiggest(elem, after){
+    //inserts iff elem is > all elements in List 
+    //(numerically or lexicographically, according to context)
+    for (i = this.front(); this.hasNext();){
+        if (this.next() >= elem){
+            return false;
+        }
+    } this.insert(elem, after);
 }
 
+list = new List();
+list.append(1);
+list.append(2);
+list.append(3);
 
-
+list.insertIfBiggest(5, 2);
+console.log(list)
